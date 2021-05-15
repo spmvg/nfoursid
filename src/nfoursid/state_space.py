@@ -18,6 +18,22 @@ class StateSpace:
             y_k &= C x_k + D u_k + e_k
         \end{cases}
 
+    The shapes of the matrices are checked for consistency and will raise if inconsistent.
+    If a matrix does not exist in the model representation, the corresponding ``np.ndarray`` should have dimension
+    zero along that axis. See the example below.
+
+    Example
+    -------
+    An autonomous state-space model has no matrices :math:`B` and :math:`D`.
+    An autonomous model with a one-dimensional internal state and output, can be represented as follows:
+
+    >>> model = StateSpace(
+    >>>     np.ones((1, 1)),
+    >>>     np.ones((1, 0)),
+    >>>     np.ones((1, 1)),
+    >>>     np.ones((1, 0))
+    >>> )
+
     :param a: matrix :math:`A`
     :param b: matrix :math:`B`
     :param c: matrix :math:`C`
