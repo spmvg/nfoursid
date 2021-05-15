@@ -3,3 +3,4 @@ __pycache__
 htmlcov
 .coverage
 dist
+build
