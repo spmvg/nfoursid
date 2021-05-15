@@ -66,3 +66,25 @@ class TestStateSpace(unittest.TestCase):
             ]),
             result
         )))
+
+    def test_autonomous_system(self):
+        model = StateSpace(
+            self.a,
+            np.zeros((1, 0)),
+            self.c,
+            np.zeros((1, 0)),
+            k=np.array([[1]])
+        )
+        e = np.array([[1]])
+
+        with self.assertRaises(ValueError):
+            model.step(np.array([[1]]))
+        y = model.step()
+        self.assertEqual((1, 1), y.shape)
+        self.assertAlmostEqual(0, y[0, 0])
+        y = model.step(e=e)
+        self.assertAlmostEqual(1, y[0, 0])
+        y = model.step(e=e)
+        self.assertAlmostEqual(6, y[0, 0])
+        y = model.step(e=e)
+        self.assertAlmostEqual(16, y[0, 0])

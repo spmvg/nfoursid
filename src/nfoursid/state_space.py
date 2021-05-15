@@ -54,6 +54,9 @@ class StateSpace:
         self.y_dim = c.shape[0]
         self.u_dim = b.shape[1]
 
+        if self.y_dim == 0:
+            raise ValueError('The dimension of the output should be at least 1')
+
     def _set_matrices(
             self,
             a: np.ndarray,
