@@ -1,0 +1,7 @@
+matplotlib>=3.4
+numpy>=1.20
+pandas>=1.2
+pytest>=6.2
+coverage>=5.5
+sphinx>=4.0
+notebook>=6.3
