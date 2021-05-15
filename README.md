@@ -9,6 +9,17 @@ are included in the representation of state-space models.
 By extension, ARMA-, AR- and MA-models can be described, too.
 The numerical implementations are based on [2].
 
+## Installation
+Releases are made available on PyPi.
+The recommended installation method is via `pip`:
+
+```python
+pip install nfoursid
+```
+
+For a development setup, the requirements are in `dev-requirements.txt`.
+Subsequently, this repo can be locally `pip`-installed.
+
 ## Documentation and code example
 Documentation is provided [here](https://nfoursid.readthedocs.io/en/latest/).
 An example Jupyter notebook is provided [here](https://github.com/spmvg/nfoursid/blob/master/examples/Overview.ipynb).
