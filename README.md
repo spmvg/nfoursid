@@ -10,7 +10,7 @@ By extension, ARMA-, AR- and MA-models can be described, too.
 The numerical implementations are based on [2].
 
 ## Documentation and code example
-Documentation is provided [here]().
+Documentation is provided [here](https://nfoursid.readthedocs.io/en/latest/).
 An example Jupyter notebook is provided [here](https://github.com/spmvg/nfoursid/blob/master/examples/Overview.ipynb).
 
 ## References
