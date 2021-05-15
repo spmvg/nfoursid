@@ -36,7 +36,7 @@ where
 - :math:`y_k \in \mathbb{R}^{d_y}` is the output vector with dimension :math:`d_y`,
 - :math:`u_k \in \mathbb{R}^{d_u}` is the input vector with dimension :math:`d_u`,
 - :math:`x_k \in \mathbb{R}^{d_x}` is the internal state vector with dimension :math:`d_x`,
-- :math:`e_k \in \mathbb{R}^{d_x}` is the noise vector with dimension :math:`d_y`,
+- :math:`e_k \in \mathbb{R}^{d_y}` is the noise vector with dimension :math:`d_y`,
 - :math:`(A, B, C, D)` are system matrices describing time dynamics and input-output coupling,
 - :math:`K` is a system matrix describing noise relationships.
 
