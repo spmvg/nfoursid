@@ -4,7 +4,7 @@ Implementation of the N4SID algorithm for subspace identification [1], together 
 models.
 
 State-space models are versatile models for representing multi-dimensional timeseries.
-As an example, the ARMAX(_p_, _q_)-models - AutoRegressive MovingAverage with eXogenous input -
+As an example, the ARMAX(_p_, _q_, _r_)-models - AutoRegressive MovingAverage with eXogenous input -
 are included in the representation of state-space models.
 By extension, ARMA-, AR- and MA-models can be described, too.
 The numerical implementations are based on [2].
