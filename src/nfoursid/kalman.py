@@ -94,6 +94,9 @@ class Kalman:
         Given an observed input ``u`` and output ``y``, update the filtered and predicted states of the Kalman filter.
         Follows the implementation of the conventional Kalman filter in [1] on page 140.
 
+        The output ``y`` can be missing by setting ``y=None``.
+        In that case, the Kalman filter will obtain the next internal state by stepping the state space model.
+
         [1] Verhaegen, Michel, and Vincent Verdult. *Filtering and system identification: a least squares approach.*
         Cambridge university press, 2007.
         """
