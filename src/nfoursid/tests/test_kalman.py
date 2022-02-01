@@ -36,6 +36,28 @@ class TestKalman(unittest.TestCase):
             kalman.y_filtereds[-1]
         ))
 
+    def test_step_with_nans(self):
+        n_datapoints = 5
+
+        kalman = Kalman(copy.deepcopy(self.model), np.eye(2))
+        np.random.seed(0)
+        for i in range(n_datapoints):
+            u = np.random.standard_normal((1, 1))
+
+            y = self.model.step(u, np.random.standard_normal((1, 1)))
+            if i == 3:
+                y = None  # illustrate a missing output
+            kalman.step(y, u)
+
+        self.assertEqual(
+            [np.isnan(x[0, 0]) for x in kalman.ys],
+            [False, False, False, True, False]
+        )
+        self.assertTrue(is_slightly_close(
+            1.3813007321174262,
+            kalman.ys[-1]
+        ))
+
     def test_extrapolate(self):
         n_to_predict = 4
         kalman = Kalman(copy.deepcopy(self.model), np.eye(2))
