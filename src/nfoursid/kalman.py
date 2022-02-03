@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from matplotlib import figure as matplotlib_figure
 import numpy as np
@@ -87,17 +87,21 @@ class Kalman:
 
     def step(
             self,
-            y: np.ndarray,
+            y: Optional[np.ndarray],
             u: np.ndarray
     ):
         """
         Given an observed input ``u`` and output ``y``, update the filtered and predicted states of the Kalman filter.
         Follows the implementation of the conventional Kalman filter in [1] on page 140.
 
+        The output ``y`` can be missing by setting ``y=None``.
+        In that case, the Kalman filter will obtain the next internal state by stepping the state space model.
+
         [1] Verhaegen, Michel, and Vincent Verdult. *Filtering and system identification: a least squares approach.*
         Cambridge university press, 2007.
         """
-        Utils.validate_matrix_shape(y, (self.state_space.y_dim, 1), 'y')
+        if y is not None:
+            Utils.validate_matrix_shape(y, (self.state_space.y_dim, 1), 'y')
         Utils.validate_matrix_shape(u, (self.state_space.u_dim, 1), 'u')
 
         x_pred = self.x_predicteds[-1] if self.x_predicteds else np.zeros((self.state_space.x_dim, 1))
@@ -106,29 +110,35 @@ class Kalman:
         k_filtered = p_pred @ self.state_space.c.T @ np.linalg.pinv(
             self.r + self.state_space.c @ p_pred @ self.state_space.c.T
         )
+
         self.p_filtereds.append(
             p_pred - k_filtered @ self.state_space.c @ p_pred
         )
+
         self.x_filtereds.append(
             x_pred + k_filtered @ (y - self.state_space.d @ u - self.state_space.c @ x_pred)
+            if y is not None else x_pred
         )
 
         k_pred = (self.s + self.state_space.a @ p_pred @ self.state_space.c.T) @ np.linalg.pinv(
             self.r + self.state_space.c @ p_pred @ self.state_space.c.T
         )
+
         self.p_predicteds.append(
             self.state_space.a @ p_pred @ self.state_space.a.T
             + self.q
             - k_pred @ (self.s + self.state_space.a @ p_pred @ self.state_space.c.T).T
         )
+
+        x_predicted = self.state_space.a @ x_pred + self.state_space.b @ u
+        if y is not None:
+            x_predicted += k_pred @ (y - self.state_space.d @ u - self.state_space.c @ x_pred)
         self.x_predicteds.append(
-            self.state_space.a @ x_pred
-            + self.state_space.b @ u
-            + k_pred @ (y - self.state_space.d @ u - self.state_space.c @ x_pred)
+            x_predicted
         )
 
         self.us.append(u)
-        self.ys.append(y)
+        self.ys.append(y if y is not None else np.full((self.state_space.y_dim, 1), np.nan))
         self.y_filtereds.append(self.state_space.output(self.x_filtereds[-1], self.us[-1]))
         self.y_predicteds.append(self.state_space.output(self.x_predicteds[-1]))
         self.kalman_gains.append(k_pred)
