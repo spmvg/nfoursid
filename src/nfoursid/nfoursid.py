@@ -64,7 +64,11 @@ class NFourSID:
         if y_frame.isnull().any().any():
             raise ValueError('Output data cannot contain nulls')
         self.u_array = u_frame.to_numpy()
+        if len(self.u_array.shape) > 2:
+            raise ValueError('Input data shall be at most 2D')
         self.y_array = y_frame.to_numpy()
+        if len(self.y_array.shape) > 2:
+            raise ValueError('Output data shall be at most 2D')
         self.u_dim = self.u_array.shape[-1]
         self.y_dim = self.y_array.shape[-1]
 
