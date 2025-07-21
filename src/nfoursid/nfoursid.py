@@ -65,8 +65,8 @@ class NFourSID:
             raise ValueError('Output data cannot contain nulls')
         self.u_array = u_frame.to_numpy()
         self.y_array = y_frame.to_numpy()
-        self.u_dim = self.u_array.shape[1]
-        self.y_dim = self.y_array.shape[1]
+        self.u_dim = self.u_array.shape[-1]
+        self.y_dim = self.y_array.shape[-1]
 
     def subspace_identification(self):
         """
