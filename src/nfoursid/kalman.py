@@ -209,6 +209,10 @@ class Kalman:
     ) -> np.ndarray:
         return np.array(list_of_states).squeeze(axis=2)
 
+    @staticmethod
+    def _reduce_dimension(element):
+        return element[0]
+
     def to_dataframe(self) -> pd.DataFrame:
         """
         Returns the output of the Kalman filter as a ``pd.DataFrame``. The returned value contains information about
@@ -242,8 +246,8 @@ class Kalman:
                 (self.next_predicted_label, self.output_label): predicteds,
                 (self.next_predicted_label, self.standard_deviation_label): predicted_stds,
                 (self.next_predicted_corrected_label, self.output_label): input_corrected_prediction,
-                (self.next_predicted_corrected_label, self.standard_deviation_label): predicted_stds
-            }).applymap(lambda array: array[0])
+                (self.next_predicted_corrected_label, self.standard_deviation_label): predicted_stds,
+            })
             for (
                 outputs,
                 filtereds,
@@ -252,12 +256,12 @@ class Kalman:
                 predicted_stds,
                 input_corrected_prediction
             ) in zip(
-                zip(*self.ys),
-                zip(*self.y_filtereds),
-                zip(*self.y_predicteds),
-                zip(*self._measurement_and_state_standard_deviation(self.p_filtereds)),
-                zip(*self._measurement_and_state_standard_deviation(self.p_predicteds)),
-                zip(*input_corrected_predictions)
+                zip(*map(self._reduce_dimension, self.ys)),
+                zip(*map(self._reduce_dimension, self.y_filtereds)),
+                zip(*map(self._reduce_dimension, self.y_predicteds)),
+                zip(*map(self._reduce_dimension, self._measurement_and_state_standard_deviation(self.p_filtereds))),
+                zip(*map(self._reduce_dimension, self._measurement_and_state_standard_deviation(self.p_predicteds))),
+                zip(*map(self._reduce_dimension, input_corrected_predictions)),
             )
         ]
         return pd.concat(output_frames, axis=1, keys=self.state_space.y_column_names)
