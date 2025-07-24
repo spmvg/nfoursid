@@ -26,5 +26,5 @@ jobs:
         pip install build
     - name: Build package
       run: python -m build
-#    - name: Publish package
-#      uses: pypa/gh-action-pypi-publish@0ab0b79471669eb3a4d647e625009c62f9f3b241
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@0ab0b79471669eb3a4d647e625009c62f9f3b241
