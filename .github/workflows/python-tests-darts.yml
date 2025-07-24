@@ -18,7 +18,6 @@ jobs:
     - name: Install Darts dependencies and local nfoursid
       run: |
         python -m pip install u8darts
-        python -m pip install -r dev-requirements.txt
         python -m pip install pre-commit pytest-cov testfixtures
         python -m pip install -e .
         python -m pip list
