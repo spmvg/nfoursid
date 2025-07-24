@@ -209,6 +209,10 @@ class Kalman:
     ) -> np.ndarray:
         return np.array(list_of_states).squeeze(axis=2)
 
+    @staticmethod
+    def _reduce_dimension(element):
+        return element[0]
+
     def to_dataframe(self) -> pd.DataFrame:
         """
         Returns the output of the Kalman filter as a ``pd.DataFrame``. The returned value contains information about
@@ -236,14 +240,14 @@ class Kalman:
 
         output_frames = [
             pd.DataFrame({
-                (self.actual_label, self.output_label): outputs,
-                (self.filtered_label, self.output_label): filtereds,
-                (self.filtered_label, self.standard_deviation_label): filtered_stds,
-                (self.next_predicted_label, self.output_label): predicteds,
-                (self.next_predicted_label, self.standard_deviation_label): predicted_stds,
-                (self.next_predicted_corrected_label, self.output_label): input_corrected_prediction,
-                (self.next_predicted_corrected_label, self.standard_deviation_label): predicted_stds
-            }).applymap(lambda array: array[0])
+                (self.actual_label, self.output_label): map(self._reduce_dimension, outputs),
+                (self.filtered_label, self.output_label): map(self._reduce_dimension, filtereds),
+                (self.filtered_label, self.standard_deviation_label): map(self._reduce_dimension, filtered_stds),
+                (self.next_predicted_label, self.output_label): map(self._reduce_dimension, predicteds),
+                (self.next_predicted_label, self.standard_deviation_label): map(self._reduce_dimension, predicted_stds),
+                (self.next_predicted_corrected_label, self.output_label): map(self._reduce_dimension, input_corrected_prediction),
+                (self.next_predicted_corrected_label, self.standard_deviation_label): map(self._reduce_dimension, predicted_stds),
+            })
             for (
                 outputs,
                 filtereds,
