@@ -1,0 +1,27 @@
+name: Run tests for Darts components
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Install Darts dependencies and local nfoursid
+      run: |
+        python -m pip install u8darts
+        python -m pip install pre-commit pytest-cov testfixtures
+        python -m pip install -e .
+        python -m pip list
+
+    - name: Make sure specific parts of Darts don't regress
+      run: |
+        python -m pytest --pyargs darts.tests.models.filtering darts.tests.models.forecasting.test_local_forecasting_models darts.tests.models.forecasting.test_probabilistic_models
